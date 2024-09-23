@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information Form</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Enter Personal Information</h1>
+
+    <form method="POST" action="{{ url_for('add_user') }}">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <button type="submit">Add User</button>
+    </form>
+
+
+    <h2>Submitted Information</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <!-- <a href="{{ url_for('edit_user', user_id=user.id) }}">Edit</a>   -->
+                    <!-- 添加编辑链接 -->
+                 
+
+                    <!-- 使用 POST 提交编辑表单 -->
+                    <!-- <form method="GET" action="{{ url_for('edit_user', user_id=user.id) }}">
+                        <button type="submit">Edit</button>
+                    </form> -->
+
+
+                    <form action="{{ url_for('edit_user', user_id=user.id) }}" method="get">
+                        <button type="submit">Edit</button>
+                        <!-- 添加链接并使其看起来像按钮 -->
+                        <!-- <a href="{{ url_for('edit_user', user_id=user.id) }}" class="link-button">Edit</a> -->
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>
