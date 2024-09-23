@@ -1,6 +1,6 @@
 记录一下python、web页面、mysql。
 
-*1.python怎么和web联系起来？*
+***1.python怎么和web联系起来？***
 要将 Python 和 Web 联系起来，通常有几种常见的方法：
 1. **使用 Web 框架**：
    - **Flask**：一个轻量级的 Web 框架，适合小型应用和原型开发。
