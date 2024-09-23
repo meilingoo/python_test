@@ -40,7 +40,10 @@ def home():
 if __name__ == '__main__':
     app.run(debug=True)
 ```
-
+注：
+```if __name__ == '__main__':
+    person_info.run(host='0.0.0.0', port=5001)```
+    任何IP都能访问，web端访问时修改成自己的IP加上端口
 ### 3. 运行 Flask 应用
 在终端中运行以下命令：
 
