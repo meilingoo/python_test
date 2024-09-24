@@ -18,7 +18,7 @@ AJAX 是一种用于创建快速动态网页的技术。
 - 运用 JavaScript 操作 DOM（Document Object Model）来执行动态效果；
 - 运用 XML 和 XSLT 操作资料;
 - 运用 XMLHttpRequest 或新的 Fetch API 与网页服务器进行异步资料交换；
-注意：AJAX 与 Flash、Silverlight 和 Java Applet 等 RIA 技术是有区分的。
+  注意：AJAX 与 Flash、Silverlight 和 Java Applet 等 RIA 技术是有区分的。
 
 
 ### 示例：使用 jQuery 的 AJAX
