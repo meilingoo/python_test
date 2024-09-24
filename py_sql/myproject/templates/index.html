@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List App</title>
+</head>
+
+<body>
+    <h1>Welcome to My To-Do List App!</h1>
+
+    <ul>
+        {% for task in tasks %}
+        <li>{{ task }}</li>
+        {% endfor %}
+    </ul>
+    <!-- Add this form below the task list in index.html -->
+    <form method="POST" action="{{ url_for('add_task') }}">
+        <label for="newTask">Add Task:</label>
+        <input type="text" id="newTask" name="newTask" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <!-- Modify the list in index.html to include checkboxes -->
+    <form method="post" action="{{ url_for('complete_tasks') }}">
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <input type="checkbox" id="{{ loop.index }}" name="taskCheckbox" value="{{ loop.index }}">
+            <label for="{{ loop.index }}">{{ task }}</label>
+        </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Complete Tasks</button>
+   </form>
+
+    <!-- Modify the list in index.html to include Delete buttons -->
+    <form method="POST" action="{{ url_for('delete_tasks') }}">
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <input type="checkbox" id="{{ loop.index }}" name="taskCheckbox" value="{{ loop.index }}">
+            <label for="{{ loop.index }}">{{ task }}</label>
+            {% if 'Completed' in task %}
+            <button type="submit" onclick="deleteTask('{{ loop.index }}')">Delete</button>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    </form>
+    
+
+    <script>
+        function deleteTask(index) {
+            document.getElementById('taskCheckbox-' + index).checked = false;
+            document.forms[0].submit();
+        }
+    </script>
+</body>
+
+</html>
