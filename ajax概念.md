@@ -87,3 +87,6 @@ if __name__ == '__main__':
 3. **JSON 数据**：使用 Flask 的 `jsonify` 返回 JSON 数据。
 
 通过这些步骤，你可以轻松实现 AJAX 功能，提升用户体验。
+
+
+ref: https://www.runoob.com/ajax/ajax-examples.html
