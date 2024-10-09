@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX CRUD</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AJAX CRUD 示例</h1>
+    <h2>Enter Personal Information</h2>
+
+    <input type="text" id="username" name="username" placeholder="输入姓名"><br>
+    <input type="number" id="age" name="age" placeholder="输入年龄"><br>
+    <input type="email" id="email" name="email" placeholder="输入邮箱"><br>
+    <button onclick="addData($('#username').val(), $('#age').val(), $('#email').val())">添加</button>
+    <!-- onclick 事件：当用户点击按钮时，会执行 addData 函数。
+    $('#username').val()：获取 ID 为 username 的输入框的值。
+    $('#age').val()：获取 ID 为 age 的输入框的值。
+    $('#email').val()：获取 ID 为 email 的输入框的值。 -->
+
+
+    <h2>个人信息列表(Submitted Information)</h2>
+    <!-- <ul id="userList"></ul> -->
+    <table>
+        <thead>
+            <tr>
+                
+                <th>Id</th>
+                <th>mql_Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>     
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                
+                <td>{{ user[4] }}</td> <!--  id -->
+                <td>{{ user[0] }}</td> <!-- mysql id -->
+                <td>{{ user[1] }}</td> <!-- name -->
+                <td>{{ user[2] }}</td> <!-- age -->
+                <td>{{ user[3] }}</td> <!-- email -->
+                <td>
+                    <button onclick="deleteData('{{ user[0] }}')">Delete</button><br>
+                    <!-- 表格中的更新按钮 -->
+                    <button
+                        onclick="openUpdateModal('{{ user[0] }}')">Update</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 一个表单模态框，用于更新用户信息 -->
+    <div id="updateModal" style="display:none;">
+        <label for="updateUserId" style="visibility: hidden;">Mysql Id:</label>
+        <input type="hidden" id="updateUserId" /> <br>
+
+        <label>用户名:</label>
+        <input type="text" id="updateName" /><br>
+
+        <label>年龄:</label>
+        <input type="number" id="updateAge" /><br>
+        
+        <label>邮箱:</label>
+        <input type="email" id="updateEmail" /><br>
+        <button onclick="submitUpdate($('#updateUserId').val())">提交更新</button>
+    </div>
+
+
+    <script>
+        // 添加数据
+        function addData(username, age, email) {
+            $.ajax({
+                url: '/add_user',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ name: username, age: age, email: email }),
+                success: function (userInfo) {
+                    console.log("User added:", userInfo);
+                    // 更新表格
+                    $('tbody').append('<tr><td>' + userInfo.id + '</td><td>' + userInfo.username + '</td><td>' + userInfo.age + '</td><td>' + userInfo.email + '</td><td><button onclick="deleteData(' + userInfo.id + ')">删除</button></td></tr>');
+                },
+                error: function (error) {
+                    console.log("Error:", error.responseJSON.message);
+                }
+            });
+        }
+
+        // 一.函数的定义 function addData(username) {
+        // 定义了一个名为 addData 的函数，接受一个参数 name，该参数代表用户输入的姓名。
+        // 二. AJAX 请求 $.ajax({
+        // 使用 jQuery 的 $.ajax 方法发起 AJAX 请求。
+        // 三. 请求配置 
+        //     1. url: '/add_user',
+        //     指定请求的 URL 为 /add_user，这是 Flask 应用中用于添加用户的路由。
+        //     2. type: 'POST',
+        //     指定请求方法为 POST，用于向服务器发送数据。
+        //     3.contentType: 'application/json',
+        //     指定发送的数据格式为 JSON，这意味着请求体中的数据将以 JSON 字符串的形式发送。
+        //     4.data: JSON.stringify({ name: name }),
+        //     将要发送的数据封装为 JSON 对象，包含一个键 name，其值为传入的 name 参数，并通过 JSON.stringify 方法将其转换为字符串。
+        //      第一个 name：这是对象的属性名，用于定义这个属性在 JSON 对象中的键。
+        //      第二个 name：这是传入 addData 函数的参数，代表用户输入的姓名。
+        //      { "name": "用户输入的姓名" }   "用户输入的姓名" 是用户在调用 addData 函数时输入的实际值。
+        // 四. 请求成功的回调函数
+        // success: function (response) {
+        // 如果请求成功，执行此回调函数，接收服务器的响应。
+        //     1.console.log(response.message);
+        //     将服务器返回的消息输出到控制台，以便开发者查看。
+        //     2. fetchData();  
+        //     调用 fetchData 函数重新获取用户列表，以更新页面显示的数据，确保用户看到最新的信息。
+
+
+        // 打开更新模态框并填充数据
+        function openUpdateModal(mql_id) {
+            
+            var row = $('tbody tr').filter(function () {
+                        return $(this).find('td').eq(1).text() == mql_id
+            });
+            var update_name = row.find('td').eq(2).text();
+            var update_age = row.find('td').eq(3).text();
+            var update_email = row.find('td').eq(4).text();
+            console.log(update_name, update_age, update_email);
+
+            $('#updateUserId').val(mql_id);  // 设置用户ID
+            $('#updateName').val(update_name);  // 设置用户名
+            $('#updateAge').val(update_age);  // 设置年龄
+            $('#updateEmail').val(update_email);  // 设置邮箱
+            $('#updateModal').show();  // 显示模态框
+        }
+
+        // 提交更新请求
+        function submitUpdate(mql_id) {
+            var row = $('tbody tr').filter(function () {
+                        return $(this).find('td').eq(1).text() == mql_id
+            });
+            var mysql_id = row.find('td').eq(1).text();
+            var name = $('#updateName').val();
+            var age = $('#updateAge').val();
+            var email = $('#updateEmail').val();
+            console.log(mysql_id, name, age, email);
+
+            $.ajax({
+                url: '/update_user/' + mysql_id,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ name: name, age: age, email: email }),
+                success: function (response) {
+                    console.log("User updated:", response);
+                
+
+                    // 更新表格中的数据，查找表格中对应的行并更新
+                    var row = $('tbody tr').filter(function () {
+                        return $(this).find('td').eq(1).text() == mysql_id;
+                    });
+
+                    // 更新该行中的数据
+                    row.find('td').eq(2).text(response.name);
+                    row.find('td').eq(3).text(response.age);
+                    row.find('td').eq(4).text(response.email);
+
+                    $('#updateModal').hide();  // 隐藏模态框
+                },
+                error: function (error) {
+                    console.log("Error:", error.responseJSON.message);
+                }
+            });
+        }
+
+        // 更新数据的代码分解和解释：
+        // updateData(user_id, name, age, email) 函数:
+
+        // 这个函数定义了一个用于发送 AJAX 请求以更新用户数据的函数，参数包括 user_id（用户的唯一 ID）、name（用户名）、age（年龄）和 email（电子邮件地址）。
+        // $.ajax({...}):
+
+        // 使用 $.ajax 来异步发送一个 HTTP 请求到服务器。
+        // url: '/edit_user/' + user_id:
+
+        // 请求的 URL 路径为 /edit_user/<user_id>，user_id 是要更新的用户的 ID。这是在 Flask 后端匹配的路由，用于处理用户数据更新。
+        // type: 'POST':
+
+        // HTTP 请求类型为 POST，用于将更新数据提交给服务器。
+        // contentType: 'application/json':
+
+        // 指定请求内容的类型是 application/json，表示我们发送的数据是以 JSON 格式传递。
+        // data: JSON.stringify({ name: name, age: age, email: email }):
+
+        // 使用 JSON.stringify 将传入的 name, age, 和 email 参数转换为 JSON 格式的数据并发送到服务器。
+        // 数据格式类似于：{ "name": "John", "age": 25, "email": "john@example.com" }。
+        // success: function (userInfo):
+
+        // 当 AJAX 请求成功时，调用这个回调函数。userInfo 是服务器返回的更新后的用户信息。
+        // 查找表格中对应的行：
+
+        // javascript
+        // Copy code
+        // var row = $('tbody tr').filter(function () {
+        //     return $(this).find('td').first().text() == user_id;
+        // });
+        // 这段代码使用 jQuery 查找表格 (<tbody>) 中的 <tr> 行，使用 .filter() 方法筛选出符合条件的行。
+        // .find('td').first().text() 用于获取该行第一个 <td> 元素的文本，也就是用户的 ID。
+        // == user_id 比较该文本是否与要更新的 user_id 相匹配。
+        // 更新该行的数据：
+
+        // javascript
+        // Copy code
+        // row.find('td').eq(1).text(userInfo.username);
+        // row.find('td').eq(2).text(userInfo.age);
+        // row.find('td').eq(3).text(userInfo.email);
+        // row.find('td').eq(1).text(userInfo.username)：更新表格中该行第二个 <td> 单元格的内容为 userInfo.username。
+        // eq(1) 表示找到索引为 1 的单元格，这里是用户名。
+        // 同样地，eq(2) 和 eq(3) 分别用于更新年龄和邮箱。
+        // error: function (error):
+
+        // 如果 AJAX 请求失败，则调用这个回调函数。使用 error.responseJSON.message 来输出服务器返回的错误信息。
+        // 总结：
+        // 这段代码负责更新页面表格中显示的用户数据，当用户的名称、年龄或电子邮件在服务器端成功更新后，会将相应的表格行中的这些数据同步更新为最新内容。
+
+
+
+
+
+        // 删除数据
+        function deleteData(user_id) {
+
+            $.ajax({
+                url: '/delete_user/' + user_id,
+                type: 'POST',
+                success: function (response) {
+                    console.log(response.message);
+                    // 删除后重新获取数据或手动移除已删除的行
+                    $('tbody tr').filter(function () {
+                        return $(this).find('td').first().text() == user_id;
+                    }).remove(); // 直接从 DOM 中移除
+
+                    // 重新排列ID
+                    updateIDs();
+                },
+                error: function (error) {
+                    console.log("Error:", error.responseJSON.message);
+                }
+            });
+        }
+
+        // 重新排列ID
+        function updateIDs() {
+            $('tbody tr').each(function (index) {
+                $(this).find('td').first().text(index + 1);  // 从1开始
+            });
+        }
+        // updateIDs 函数的作用是重新排列表格中每一行的ID，使其从1开始连续递增。具体步骤如下：
+        // 选择表格行：使用 $('tbody tr') 选择所有在 < tbody > 内的表格行。
+        // 遍历每一行：each 方法对每一行执行一个回调函数，index 参数代表当前行的索引（从0开始）。
+        // 更新ID：$(this).find('td').first().text(index + 1) 找到当前行的第一个单元格（ID列），并将其文本更新为 index + 1，确保ID从1开始。
+        // 通过这种方式，函数能够在用户删除某一行后，使表格的ID始终保持连续。
+
+        // 页面加载时获取数据
+        // $(document).ready(function () {
+        //     fetchData();
+        // });
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- 说明
+
+
+
+引入 jQuery：在 <head> 标签中引入 jQuery 库。
+
+脚本位置：将 AJAX 函数放在 <script> 标签中，通常放在 </body> 标签之前，以确保页面加载完成后再执行。
+示例调用：你可以取消注释示例调用以测试功能。根据需求，可以在特定事件（如按钮点击）中调用这些函数。 -->
