@@ -22,3 +22,10 @@
 - **`images`** 文件夹：这个文件夹包含网站上使用的所有图片。在 `test-site` 文件夹内创建一个名为 `images` 的文件夹。
 - **`styles`** 文件夹：这个文件夹包含为内容提供样式的 CSS 代码（例如，设置文本和背景的颜色）。在 `test-site` 文件夹内创建一个名为 `styles` 的文件夹。
 - **`scripts`** 文件夹：这个文件夹包含所有用于向网站添加交互功能的 JavaScript 代码（例如，点击时加载数据的按钮）。在 `test-site`文件夹内创建一个名为 `scripts` 的文件夹。
+
+## 一些通用的文件路径规则：
+
+- 若引用的目标文件与 HTML 文件同级，只需直接使用文件名，例如：my-image.jpg。
+- 要引用子目录中的文件，请在路径前面写上目录名，再加上一个正斜杠。例如：subdirectory/my-image.jpg。
+- 若引用的目标文件位于 HTML 文件的上级，需要加上两个点。举个例子，如果 index.html 在 test-site 的一个子文件夹内，而 my-image.jpg 在 test-site 内，你可以使用 ../my-image.jpg 从 index.html 引用 my-image.jpg。
+- 以上方法可以随意组合，比如：../subdirectory/another-subdirectory/my-image.jpg。
