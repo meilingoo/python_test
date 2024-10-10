@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>My test page</title>
+    <link href="styles/style.css" rel="stylesheet" /> <!-- 链接样式文件 -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" /> <!-- 链接字体文件,这段代码将你的页面链接到一个样式表，该样式表将 Open Sans 字体家族与你的网页一起加载。 -->
+
+</head>
+
+<body>
+    <h1>Mozilla is cool</h1>
+    <img src="images/flower.png" alt="一副水墨画风的花" />
+    <p>At Mozilla, we're a global community of</p>
+
+    <ul><!-- ul为无序列表 -->
+        <li>technologists</li>
+        <li>thinkers</li>
+        <li>builders</li>
+    </ul>
+
+    <p>working together to keep the Internet alive and accessible, so people worldwide can be informed contributors and
+        creators of the Web. We believe this act of human collaboration across an open platform is essential to
+        individual growth and our collective future.</p>
+    <p>Read the <a href="https://www.mozilla.org/zh-CN/about/manifesto/">Mozilla Manifesto</a>
+        to learn even more about the values and principles that guide the pursuit of our mission.
+    </p>
+
+    <button>切换用户</button>
+
+    <script src="scripts/main.js" defer></script>
+
+</body>
+
+</html>
+<!-- 该行 HTML 代码 <img src="" alt="My test image"> 用于向页面插入图片。
+ 我们需要告知 HTML 图片的位置。这张图片位于与 index.html 处于同一目录的 images 目录下。为
+ 了从 index.html 访问到图片，我们需要的文件路径是 images/your-image-filename。
+ 假如图片叫做 firefox-icon.png，那么文件路径就是 images/firefox-icon.png。
+在代码 src="" 的双引号之间插入文件路径。
+将 alt 属性的内容改成引入的图片的描述信息。在这个例子中，就是 alt="Firefox 标志：一只盘旋在地球上的火狐"。 -->
