@@ -1,21 +1,28 @@
 # margin
 ref: https://developer.mozilla.org/zh-CN/docs/Web/CSS/margin
+
 margin 属性为给定元素设置所有四个（上右下左）方向的外边距属性。
 也就是 margin-top、margin-right、margin-bottom 和 margin-left 四个外边距属性设置的简写。
-/* 应用于所有边 */
+
+- /* 应用于所有边 */
+
 margin: 1em;
 margin: -3px;
 
-/* 上边下边 | 左边右边 */
+- /* 上边下边 | 左边右边 */
+
 margin: 5% auto;
 
-/* 上边 | 左边右边 | 下边 */
+- /* 上边 | 左边右边 | 下边 */
+
 margin: 1em auto 2em;
 
-/* 上边 | 右边 | 下边 | 左边 */
+- /* 上边 | 右边 | 下边 | 左边 */
+
 margin: 2px 1em 0 auto;
 
 /* 全局值 */
+
 margin: inherit;
 margin: initial;
 margin: unset;
