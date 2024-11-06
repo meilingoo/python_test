@@ -6,26 +6,26 @@ margin 属性为给定元素设置所有四个（上右下左）方向的外边�
 
 - /* 应用于所有边 */
 
-margin: 1em;
-margin: -3px;
+    margin: 1em;
+    margin: -3px;
 
 - /* 上边下边 | 左边右边 */
 
-margin: 5% auto;
+    margin: 5% auto;
 
 - /* 上边 | 左边右边 | 下边 */
 
-margin: 1em auto 2em;
+    margin: 1em auto 2em;
 
 - /* 上边 | 右边 | 下边 | 左边 */
 
-margin: 2px 1em 0 auto;
+    margin: 2px 1em 0 auto;
 
-/* 全局值 */
+- /* 全局值 */
 
-margin: inherit;
-margin: initial;
-margin: unset;
+  margin: inherit;
+  margin: initial;
+  margin: unset;
 
 margin 属性接受 1~4 个值。每个值可以是 <length>，<percentage>，或 auto。取值为负时元素会比原来更接近临近元素。
 
