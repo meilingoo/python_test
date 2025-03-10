@@ -3,6 +3,7 @@
   一种是添加到testsuite集合中再加载所有的被测试对象，而testsuit里存放的就是所需测试的用例，下面分别列出3种方法的具体使用方式：
 1、通过unittest.main()来执行测试用例的方式：
 
+```
 import unittest 
 
 class UCTestCase(unittest.TestCase):
@@ -22,6 +23,7 @@ class UCTestCase(unittest.TestCase):
         ......       
 if __name__ == "__main__":
     unittest.main()
+```
 
 2、通过testsuit来执行测试用例的方式：
 
