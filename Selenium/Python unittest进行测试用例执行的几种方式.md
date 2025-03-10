@@ -86,8 +86,11 @@ if __name__ == "__main__":
 
 ### 下面针对上述脚本中应用到的unittest模块下的几个成员进行简单的介绍，以便于理解上述代码：
  **TestCase**：所有测试用例的基本类，给一个测试方法的名字，就会返回一个测试用例实例；
+ 
  **TestSuit**：组织测试用例的实例，支持测试用例的添加和删除，最终将传递给  testRunner进行测试执行；
+ 
  **TextTestRunner**：进行测试用例执行的实例，其中Text的意思是以文本形式显示测试结果。测试的结果会保存到TextTestResult实例中，包括运行了多少测试用例，成功了多少，失败了多少等信息；
+ 
  **TestLoader**：用来加载TestCase到TestSuite中的，其中有几个  loadTestsFrom__()方法，就是从各个地方寻找TestCase，创建它们的实例，然后add到TestSuite中，再返回一个TestSuite实例；
 
  
